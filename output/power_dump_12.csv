@@ -1,0 +1,9 @@
+# file...... output/power_dump_12.csv
+# date...... Thu Aug  8 14:07:39 2019
+# user...... alyona_slac
+# host...... (null)
+# trigger... (none)
+# interval.. 60
+# limit..... 0
+# timestamp,meter_331:measured_power, meter_332:measured_power, meter_333:measured_power, meter_334:measured_power, meter_335:measured_power, meter_336:measured_power, meter_337:measured_power, meter_338:measured_power, meter_339:measured_power, meter_340:measured_power, meter_341:measured_power, meter_342:measured_power, meter_343:measured_power, meter_344:measured_power
+2018-03-01 00:00:00 PST,+2158.2+7.61093d,+2158.2+7.61093d,+2158.2+7.61093d,+2158.2+7.61093d,+2158.21+7.61095d,+2158.21+7.61095d,+2158.22+7.61097d,+2158.22+7.61097d,+2157.63+7.60967d,+2157.63+7.60967d,+2157.63+7.60967d,+2157.63+7.60967d,+2157.92+7.61031d,+2157.92+7.61031d
