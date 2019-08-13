@@ -1,0 +1,99 @@
+///////////////////////////////////////////////////////
+//
+// IEEE 123 realtime simulation model
+// Copyright (C) 2016, Stanford University
+// Author: dchassin@slac.stanford.edu
+//
+///////////////////////////////////////////////////////
+
+//
+// Read the configuration file for this system
+// Assumes the model is run from parent of model folder
+//
+#include "config/default.glm"
+#define CONFIGFILE=config/default.glm
+#ifexist config/local.glm
+#include "config/local.glm"
+#set CONFIGFILE=config/local.glm
+#endif
+
+#ifdef TIMEZONE
+clock {
+	timezone ${TIMEZONE};
+#ifdef STARTTIME
+	starttime ${STARTTIME};
+#endif
+#ifdef STOPTIME
+	stoptime ${STOPTIME};
+#endif
+}
+#else
+#error TIMEZONE is not specified in ${CONFIGFILE}
+#endif // TIMEZONE
+
+///////////////////////////////////////////////////////
+//
+// WEATHER
+//
+///////////////////////////////////////////////////////
+#ifexist data/${WEATHER}
+module climate;
+object climate {
+        name weather;
+        tmyfile "data/${WEATHER}";
+        interpolate QUADRATIC;
+}
+#else
+#error WEATHER is not specified in ${CONFIGFILE}
+#endif // exist WEATHER
+
+
+#ifdef SOLAR
+module generators;
+#endif // SOLAR
+module powerflow;
+
+module residential; 
+object meter {
+	name main_node;
+	voltage 2401 V; 
+}
+
+object transformer_configuration {
+	name xfmr_config;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerA_rating 75;
+	powerB_rating 75;
+	powerC_rating 75;
+	primary_voltage 2401;
+	secondary_voltage 120.000;
+	impedance 0.006+0.0136j;
+}
+
+// load/solar connection
+object transformer {
+	name xfrm_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	from load_${LOADID};
+	to node_${LOADID}${PHASE};
+	configuration xfmr_config;
+}
+object triplex_node {
+	name node_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	nominal_voltage 120;
+}
+object triplex_meter:..${COUNT} { 
+	name `meter_{SEQ_CUSTID:INC}`;
+	groupid load_${LOADID};
+	parent node_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	nominal_voltage 120;
+	latitude (load_${LOADID}.latitude);
+	longitude (load_${LOADID}.longitude);
+
+	object house { 
+		floor_area random.triangle(1000,2000);
+		name `house_{SEQ_CUSTID}`;
+	}; 
