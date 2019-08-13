@@ -1,9 +1,0 @@
-# file...... output/power_dump_5.csv
-# date...... Thu Aug  8 14:07:39 2019
-# user...... alyona_slac
-# host...... (null)
-# trigger... (none)
-# interval.. 60
-# limit..... 0
-# timestamp,meter_121:measured_power, meter_122:measured_power, meter_123:measured_power, meter_124:measured_power, meter_125:measured_power, meter_126:measured_power, meter_127:measured_power, meter_128:measured_power, meter_129:measured_power, meter_130:measured_power, meter_131:measured_power, meter_132:measured_power, meter_133:measured_power, meter_134:measured_power, meter_135:measured_power, meter_136:measured_power, meter_137:measured_power, meter_138:measured_power, meter_139:measured_power, meter_140:measured_power, meter_141:measured_power, meter_142:measured_power, meter_143:measured_power, meter_144:measured_power, meter_145:measured_power, meter_146:measured_power, meter_147:measured_power, meter_148:measured_power, meter_149:measured_power, meter_150:measured_power
-2018-03-01 00:00:00 PST,+2121.46+7.5284d,+2121.46+7.5284d,+2121.46+7.5284d,+2120.21+7.52553d,+2120.21+7.52553d,+2120.21+7.52553d,+2120.21+7.52553d,+2120.21+7.52553d,+2120.21+7.52553d,+2120.21+7.52553d,+2122.75+7.53134d,+2122.75+7.53134d,+2122.75+7.53134d,+2121.44+7.52834d,+2121.44+7.52834d,+2121.44+7.52834d,+2121.44+7.52834d,+2121.44+7.52834d,+2121.44+7.52834d,+2121.44+7.52834d,+2120.87+7.52704d,+2120.87+7.52704d,+2120.87+7.52704d,+2120.67+7.52658d,+2120.67+7.52658d,+2120.67+7.52658d,+2120.67+7.52658d,+2122.9+7.5317d,+2122.9+7.5317d,+2123.5+7.53306d

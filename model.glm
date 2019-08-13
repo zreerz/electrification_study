@@ -1,0 +1,124 @@
+///////////////////////////////////////////////////////
+//
+// IEEE 123 realtime simulation model
+// Copyright (C) 2016, Stanford University
+// Author: dchassin@slac.stanford.edu
+//
+///////////////////////////////////////////////////////
+
+//
+// Read the configuration file for this system
+// Assumes the model is run from parent of model folder
+//
+#include "config/default.glm"
+#define CONFIGFILE=config/default.glm
+#ifexist config/local.glm
+#include "config/local.glm"
+#set CONFIGFILE=config/local.glm
+#endif
+
+#ifdef TIMEZONE
+clock {
+	timezone ${TIMEZONE};
+#ifdef STARTTIME
+	starttime ${STARTTIME};
+#endif
+#ifdef STOPTIME
+	stoptime ${STOPTIME};
+#endif
+}
+#else
+#error TIMEZONE is not specified in ${CONFIGFILE}
+#endif // TIMEZONE
+
+///////////////////////////////////////////////////////
+//
+// WEATHER
+//
+///////////////////////////////////////////////////////
+#ifexist data/${WEATHER}
+module climate;
+object climate {
+        name weather;
+        tmyfile "data/${WEATHER}";
+        interpolate QUADRATIC;
+}
+#else
+#error WEATHER is not specified in ${CONFIGFILE}
+#endif // exist WEATHER
+
+
+#ifdef SOLAR
+module generators;
+#endif // SOLAR
+module powerflow;
+module tape;
+module residential; 
+
+
+object meter {
+	name main_node;
+	nominal_voltage 2401 V;
+	phases ABCN;
+}
+object recorder {
+	name main_recorder; 
+	parent main_node;
+	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
+	interval -1;
+	file "output/substation_power.csv";
+}
+object meter {
+	name main_node_A;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases AN;
+}
+object meter {
+	name main_node_B;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases BN;
+}
+object meter {
+	name main_node_C;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases CN;
+}
+
+object transformer_configuration {
+	name xfmr_config_A;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerA_rating 1000;
+	primary_voltage 2401;
+	secondary_voltage 120.000 V;
+	impedance 0.006+0.0136j;
+}
+object transformer_configuration {
+	name xfmr_config_B;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerB_rating 1000;
+	primary_voltage 2401 V;
+	secondary_voltage 120.000 V;
+	impedance 0.006+0.0136j;
+}
+object transformer_configuration {
+	name xfmr_config_C;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerC_rating 1000;
+	primary_voltage 2401 V;
+	secondary_voltage 120.000 V;
+	impedance 0.006+0.0136j;
+}
+
+global int32 SEQ_CUSTID 0;
+#set allow_reinclude=true
+
+#include using(AREA=A,LOADID=1,PHASE=A,COUNT=33) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=B,COUNT=33) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=C,COUNT=33) "house.glm"
+

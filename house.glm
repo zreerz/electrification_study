@@ -1,0 +1,28 @@
+// load/solar connection
+object transformer {
+	name xfrm_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	from main_node_${PHASE};
+	to node_${LOADID}${PHASE};
+	configuration xfmr_config_${PHASE};
+}
+object triplex_node {
+	name node_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	nominal_voltage 120;
+}
+object triplex_meter:..${COUNT} { 
+	name `meter_{SEQ_CUSTID:INC}`;
+	groupid load_${LOADID};
+	parent node_${LOADID}${PHASE};
+	phases ${PHASE}S;
+	nominal_voltage 120;
+
+	object house { 
+		name `house_{SEQ_CUSTID}`;
+		floor_area random.triangle(1000,1500);
+		cooling_setpoint 76 degF;
+		heating_setpoint 65 degF;
+		hvac_power_factor 0.75;
+	}; 
+}
