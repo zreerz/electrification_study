@@ -52,48 +52,73 @@ object climate {
 module generators;
 #endif // SOLAR
 module powerflow;
-
+module tape;
 module residential; 
+
+
 object meter {
 	name main_node;
-	voltage 2401 V; 
+	nominal_voltage 2401 V;
+	phases ABCN;
+}
+object recorder {
+	name main_recorder; 
+	parent main_node;
+	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
+	interval -1;
+	file "output/substation_power.csv";
+}
+object meter {
+	name main_node_A;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases AN;
+}
+object meter {
+	name main_node_B;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases BN;
+}
+object meter {
+	name main_node_C;
+	parent main_node;
+	nominal_voltage 2401 V;
+	phases CN;
 }
 
 object transformer_configuration {
-	name xfmr_config;
+	name xfmr_config_A;
 	connect_type SINGLE_PHASE_CENTER_TAPPED;
 	install_type POLETOP;
-	powerA_rating 75;
-	powerB_rating 75;
-	powerC_rating 75;
+	powerA_rating 1000;
 	primary_voltage 2401;
-	secondary_voltage 120.000;
+	secondary_voltage 120.000 V;
+	impedance 0.006+0.0136j;
+}
+object transformer_configuration {
+	name xfmr_config_B;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerB_rating 1000;
+	primary_voltage 2401 V;
+	secondary_voltage 120.000 V;
+	impedance 0.006+0.0136j;
+}
+object transformer_configuration {
+	name xfmr_config_C;
+	connect_type SINGLE_PHASE_CENTER_TAPPED;
+	install_type POLETOP;
+	powerC_rating 1000;
+	primary_voltage 2401 V;
+	secondary_voltage 120.000 V;
 	impedance 0.006+0.0136j;
 }
 
-// load/solar connection
-object transformer {
-	name xfrm_${LOADID}${PHASE};
-	phases ${PHASE}S;
-	from load_${LOADID};
-	to node_${LOADID}${PHASE};
-	configuration xfmr_config;
-}
-object triplex_node {
-	name node_${LOADID}${PHASE};
-	phases ${PHASE}S;
-	nominal_voltage 120;
-}
-object triplex_meter:..${COUNT} { 
-	name `meter_{SEQ_CUSTID:INC}`;
-	groupid load_${LOADID};
-	parent node_${LOADID}${PHASE};
-	phases ${PHASE}S;
-	nominal_voltage 120;
-	latitude (load_${LOADID}.latitude);
-	longitude (load_${LOADID}.longitude);
+global int32 SEQ_CUSTID 0;
+#set allow_reinclude=true
 
-	object house { 
-		floor_area random.triangle(1000,2000);
-		name `house_{SEQ_CUSTID}`;
-	}; 
+#include using(AREA=A,LOADID=1,PHASE=A,COUNT=33) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=B,COUNT=33) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=C,COUNT=33) "house.glm"
+
