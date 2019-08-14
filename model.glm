@@ -1,4 +1,8 @@
 ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////
 //
 // IEEE 123 realtime simulation model
 // Copyright (C) 2016, Stanford University
@@ -16,20 +20,6 @@
 #include "config/local.glm"
 #set CONFIGFILE=config/local.glm
 #endif
-
-////// ELECTRIFICATION CONFIGURATION ////////
-#define GAS_HEATING_COUNT=32
-#define GAS_WHHEATING_COUNT=32
-#define GAS_COOKING_COUNT=32
-#define GAS_DRYING_COUNT=32
-#define ELEC_HEATING_COUNT=2
-#define ELEC_WHHEATING_COUNT=2
-#define ELEC_COOKING_COUNT=2
-#define ELEC_DRYING_COUNT=2
-//#define GAS_FRACTION_HEATING=COUNT-ELECTRIFICATION_FRACTION_HEATING*COUNT //cast as int
-//#define GAS_FRACTION_WHHEATING=COUNT-ELECTRIFICATION_FRACTION_WHHEATING*COUNT
-//#define GAS_FRACTION_COOKING=COUNT-ELECTRIFICATION_FRACTION_COOKING*COUNT
-//#define GAS_FRACTION_DRYING=COUNT-ELECTRIFICATION_FRACTION_DRYING*COUNT 
 
 #ifdef TIMEZONE
 clock {
@@ -69,7 +59,6 @@ module powerflow;
 module tape;
 module residential; 
 
-
 object meter {
 	name main_node;
 	nominal_voltage 2401 V;
@@ -80,7 +69,7 @@ object recorder {
 	parent main_node;
 	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
 	interval -1;
-	file "output/substation_power.csv";
+	file "output/substation_power_${RUN_NAME}.csv";
 }
 object meter {
 	name main_node_A;
@@ -133,8 +122,8 @@ global int32 SEQ_CUSTID_WH 0;
 global int32 SEQ_CUSTID_HOUSE 0;
 #set allow_reinclude=true
 
-#include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELECTRIFICATION_FRACTION_HEATING},WH_ELEC=${ELECTRIFICATION_FRACTION_WHHEATING},DRYER_ELEC=${ELECTRIFICATION_FRACTION_DRYING},STV_ELEC=${ELECTRIFICATION_FRACTION_COOKING}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELECTRIFICATION_FRACTION_HEATING},WH_ELEC=${ELECTRIFICATION_FRACTION_WHHEATING},DRYER_ELEC=${ELECTRIFICATION_FRACTION_DRYING},STV_ELEC=${ELECTRIFICATION_FRACTION_COOKING}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=C,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELECTRIFICATION_FRACTION_HEATING},WH_ELEC=${ELECTRIFICATION_FRACTION_WHHEATING},DRYER_ELEC=${ELECTRIFICATION_FRACTION_DRYING},STV_ELEC=${ELECTRIFICATION_FRACTION_COOKING}) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELEC_HEATING_COUNT},WH_ELEC=${ELEC_WHHEATING_COUNT},DRYER_ELEC=${ELEC_DRYING_COUNT},STV_ELEC=${ELEC_COOKING_COUNT}) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELEC_HEATING_COUNT},WH_ELEC=${ELEC_WHHEATING_COUNT},DRYER_ELEC=${ELEC_DRYING_COUNT},STV_ELEC=${ELEC_COOKING_COUNT}) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=C,COUNT=${HOUSESPERPHASE},HVAC_ELEC=${ELEC_HEATING_COUNT},WH_ELEC=${ELEC_WHHEATING_COUNT},DRYER_ELEC=${ELEC_DRYING_COUNT},STV_ELEC=${ELEC_COOKING_COUNT}) "house.glm"
 
 
