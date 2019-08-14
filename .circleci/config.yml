@@ -14,10 +14,6 @@ jobs:
       - run:
           name: Run the simulation
           command: |
-            git clone https://github.com/dchassin/gridlabd.git
-            mv -f config/local.glm gridlabd/models/ieee123/config/
-            more gridlabd/models/ieee123/config/local.glm
-            cd gridlabd/models/ieee123
-            gridlabd model/ieee123.glm
+            sh main.sh
       - store_artifacts: 
-            path: /root/project/gridlabd/models/ieee123/output
+            path: /root/project/
