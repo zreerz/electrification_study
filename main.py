@@ -22,14 +22,14 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 		elif 'Appliance Type' in row[0] : 
 			continue 
 		else :
-			gas_heat = total_count*float(row[1])
-			gas_whheat = total_count*float(row[2])
-			gas_cook = total_count*float(row[3]) 
-			gas_dry = total_count*float(row[4])
-			e_heat = total_count-gas_heat 
-			e_whheat = total_count-gas_whheat 
-			e_cook = total_count-gas_cook  
-			e_dry = total_count-gas_dry 
+			e_heat = total_count*float(row[1])
+			e_whheat = total_count*float(row[2])
+			e_cook = total_count*float(row[3]) 
+			e_dry = total_count*float(row[4])
+			gas_heat = total_count-e_heat
+			gas_whheat = total_count-e_whheat
+			gas_cook = total_count-e_cook
+			gas_dry = total_count-e_dry
 			config_file_name = 'elec_config_'+str(row[0]).replace(" ", "_")+'.glm'
 			config_files.append(config_file_name)
 			fw = open("elec_config/"+config_file_name, 'w')

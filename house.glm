@@ -35,8 +35,10 @@ object waterheater:..${ELEC_WHHEATING_COUNT} {
 	parent `house_${SEQ_CUSTID_HOUSE:INC}`;
 	heat_mode ELECTRIC;
 }
+#if GAS_WHHEATING_COUNT>0
 object waterheater:..${GAS_WHHEATING_COUNT} {
 	name `wh_{SEQ_CUSTID_WH:INC}`;
 	parent `house_{SEQ_CUSTID_HOUSE:INC}`;
 	heat_mode GASHEAT;
 }
+#endif //GAS_WHHEATING_COUNT
