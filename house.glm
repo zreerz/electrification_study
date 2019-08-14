@@ -1,4 +1,3 @@
-// load/solar connection
 object transformer {
 	name xfrm_${LOADID}${PHASE};
 	phases ${PHASE}S;
@@ -11,18 +10,33 @@ object triplex_node {
 	phases ${PHASE}S;
 	nominal_voltage 120;
 }
+
+
 object triplex_meter:..${COUNT} { 
 	name `meter_{SEQ_CUSTID:INC}`;
 	groupid load_${LOADID};
 	parent node_${LOADID}${PHASE};
 	phases ${PHASE}S;
 	nominal_voltage 120;
-
 	object house { 
 		name `house_{SEQ_CUSTID}`;
 		floor_area random.triangle(1000,1500);
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
 		hvac_power_factor 0.75;
+#if ELEC_HEATING_COUNT<SEQ_CUSTID
+		system_type GAS;
+#endif //GAS_HEATING_COUNT
 	}; 
+}
+
+object waterheater:..${ELEC_WHHEATING_COUNT} {
+	name `wh_{SEQ_CUSTID_WH:INC}`;
+	parent `house_${SEQ_CUSTID_HOUSE:INC}`;
+	heat_mode ELECTRIC;
+}
+object waterheater:..${GAS_WHHEATING_COUNT} {
+	name `wh_{SEQ_CUSTID_WH:INC}`;
+	parent `house_{SEQ_CUSTID_HOUSE:INC}`;
+	heat_mode GASHEAT;
 }
