@@ -4,14 +4,8 @@ import os
 import glob
 from shutil import copyfile
 
-gas_heat = 0 
-gas_whheat = 0
-gas_cook = 0 
-gas_dry = 0
-e_heat = 0 
-e_whheat = 0
-e_cook = 0 
-e_dry = 0
+gas_count = 0 
+elec_count = 0
 
 config_files=[]
 with open('config/appliance_config.csv', newline='') as csvfile : 
@@ -19,29 +13,17 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 	for row in fr : 
 		if "Total Number of Houses" in row[0] : 
 			total_count = int(row[1])/3 #count per phase
-		elif 'Appliance Type' in row[0] : 
+		elif 'Run Name' in row[0] : 
 			continue 
 		else :
-			e_heat = total_count*float(row[1])
-			e_whheat = total_count*float(row[2])
-			e_cook = total_count*float(row[3]) 
-			e_dry = total_count*float(row[4])
-			gas_heat = total_count-e_heat
-			gas_whheat = total_count-e_whheat
-			gas_cook = total_count-e_cook
-			gas_dry = total_count-e_dry
+			elec_count = total_count*float(row[1])
+			gas_count = total_count-elec_count
 			config_file_name = 'elec_config_'+str(row[0]).replace(" ", "_")+'.glm'
 			config_files.append(config_file_name)
 			fw = open("elec_config/"+config_file_name, 'w')
 			fw.write('#define HOUSESPERPHASE=' + str(int(total_count)))
-			fw.write('\n#define GAS_HEATING_COUNT=' + str(int(gas_heat))) 
-			fw.write('\n#define GAS_WHHEATING_COUNT=' + str(int(gas_whheat))) 
-			fw.write('\n#define GAS_COOKING_COUNT=' + str(int(gas_cook))) 
-			fw.write('\n#define GAS_DRYING_COUNT=' + str(int(gas_dry))) 
-			fw.write('\n#define ELEC_HEATING_COUNT=' + str(int(e_heat))) 
-			fw.write('\n#define ELEC_WHHEATING_COUNT=' + str(int(e_whheat))) 
-			fw.write('\n#define ELEC_COOKING_COUNT=' + str(int(e_cook))) 
-			fw.write('\n#define ELEC_DRYING_COUNT=' + str(int(e_dry))) 
+			fw.write('\n#define GAS_COUNT=' + str(int(gas_count))) 
+			fw.write('\n#define ELEC_COUNT=' + str(int(elec_count))) 
 
 for i,file_name in enumerate(config_files) : 
 	if i==0 : # resetting the folder by removing all the model files 

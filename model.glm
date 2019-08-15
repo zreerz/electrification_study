@@ -59,7 +59,7 @@ module powerflow;
 module tape;
 module residential{
 	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
-	paneldump_interval 60;
+	paneldump_interval -1;
 	paneldump_filename "paneldump_${RUN_NAME}";
 }
 
@@ -121,9 +121,13 @@ object transformer_configuration {
 	secondary_voltage 120.000 V;
 	impedance 0.006+0.0136j;
 }
-global int32 SEQ_CUSTID 0;
-global int32 SEQ_CUSTID_PH 0;
+global int32 SEQ_CUSTID 0; // Numbers all houses
+global int32 SEQ_CUSTID_PH 0; //Numbers houses per phase 
 #set allow_reinclude=true
+
+class house {
+	double seqid;
+}
 
 #include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE}) "house.glm"
 #include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE}) "house.glm"
