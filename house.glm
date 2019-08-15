@@ -22,11 +22,23 @@ object triplex_meter:..${COUNT} {
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
 		hvac_power_factor 0.75;
-		seqid `{SEQ_A}`;
-#if ELEC_COUNT<${SEQ_CUSTID_PH}
-		system_type ($seqid-ELEC_COUNT) ? GAS : ELECTRIC;
-#endif //GAS_HEATING_COUNT
+#if GAS==yes
+#if GAS_COOL==no
+		cooling_system_type NONE;
+#else 
+		cooling_system_type HEAT_PUMP;
 		gas_enduses "WATERHEATER|RANGE|DRYER";	
+#endif //GAS_COOL
+		heating_system_type GAS;
+		thermal_integrity_level ABOVE_NORMAL;
+#endif //GAS yes
+#if GAS==no
+#if UPGRADE==yes
+		cooling_system_type HEAT_PUMP;
+		heating_system_type HEAT_PUMP;
+		thermal_integrity_level VERY_GOOD;
+#endif //UPGRADE
+#endif // GAS no			
 	}; 
 }
 

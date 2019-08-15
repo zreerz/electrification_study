@@ -121,16 +121,14 @@ object transformer_configuration {
 	secondary_voltage 120.000 V;
 	impedance 0.006+0.0136j;
 }
-global int32 SEQ_CUSTID 0; // Numbers all houses
-global int32 SEQ_CUSTID_PH 0; //Numbers houses per phase 
+global int32 SEQ_CUSTID 0;
 #set allow_reinclude=true
 
-class house {
-	double seqid;
-}
-
-#include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=C,COUNT=${HOUSESPERPHASE}) "house.glm"
+#include using(LOADID=1,PHASE=A,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#include using(LOADID=1,PHASE=A,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
 
 
