@@ -12,6 +12,10 @@ if [ ! -d "elec_config/" ]
 then
     mkdir elec_config
 fi
+if [ ! -d "paneldump/" ] 
+then
+    mkdir elec_config
+fi
 python3 main.py
 for filename in model_files/*.glm; do 
 	gridlabd "$filename"

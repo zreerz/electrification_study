@@ -60,7 +60,7 @@ module tape;
 module residential{
 	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
 	paneldump_interval -1;
-	paneldump_filename "paneldump_${RUN_NAME}";
+	paneldump_filename "paneldump/paneldump_${RUN_NAME}";
 }
 
 object meter {

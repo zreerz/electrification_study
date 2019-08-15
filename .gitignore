@@ -109,3 +109,4 @@ output/
 model_files/
 elec_config*
 *.json
+paneldump/

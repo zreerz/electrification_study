@@ -30,7 +30,12 @@ object triplex_meter:..${COUNT} {
 	phases ${PHASE}S;
 	nominal_voltage 120;
 	object house { 
-		name `house_{SEQ_CUSTID}`;
+#if GAS==yes
+		name `house_{SEQ_CUSTID}_GAS`;
+#else 
+		name `house_{SEQ_CUSTID}_ELEC`;
+#endif
+		groupid group_houses;
 		floor_area random.triangle(1000,1500);
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
@@ -39,19 +44,22 @@ object triplex_meter:..${COUNT} {
 #if GAS_COOL==no
 		cooling_system_type NONE;
 #else 
-		cooling_system_type HEAT_PUMP;
-		gas_enduses "WATERHEATER|RANGE|DRYER";	
+		cooling_system_type HEAT_PUMP;	
 #endif //GAS_COOL
+		gas_enduses "WATERHEATER|RANGE|DRYER";
 		heating_system_type GAS;
 		thermal_integrity_level ABOVE_NORMAL;
 #endif //GAS yes
 #if GAS==no
-#if UPGRADE==yes
-		cooling_system_type HEAT_PUMP;
 		heating_system_type HEAT_PUMP;
-		thermal_integrity_level VERY_GOOD;
-#endif //UPGRADE
-#endif // GAS no			
+		cooling_system_type HEAT_PUMP;
+//#if UPGRADE==yes
+	//	thermal_integrity_level VERY_GOOD;
+		// cooling_system_type HEAT_PUMP;
+//#else 
+		thermal_integrity_level ABOVE_NORMAL;
+//#endif //UPGRADE
+#endif // GAS no	
+				
 	}; 
 }
-
