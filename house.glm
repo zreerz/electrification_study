@@ -29,29 +29,7 @@ object triplex_meter:..${COUNT} {
 #if ELEC_HEATING_COUNT<${SEQ_CUSTID_PH}
 		system_type GAS;
 #endif //GAS_HEATING_COUNT
-		object range {
-			name `range_{SEQ_CUSTID}`;
-#if ELEC_COOKING_COUNT<${SEQ_CUSTID_PH}
-//#print SEQ CUSTID ${SEQ_CUSTID_PH}
-			heat_mode GASHEAT;
-#endif //ELEC_COOKING_COUNT
-		};
-#if ELEC_DRYING_COUNT>=${SEQ_CUSTID_PH}
-		object dryer {
-			name `dryer_{SEQ_CUSTID}`;
-			motor_power 350;
-		};
-#endif //ELEC_DRYING_COUNT
-		object waterheater {
-			name `wh_{SEQ_CUSTID}`;
-			tank_volume 50 gal;
-			tank_height 3.78 ft;
-#if ELEC_WHHEATING_COUNT<${SEQ_CUSTID_PH}
-			heat_mode GASHEAT;
-#else 
-			heat_mode ELECTRIC;
-#endif //ELEC_WHHEATING_COUNT
-		};
+		gas_enduses "WATERHEATER|RANGE|DRYER";	
 	}; 
 }
 

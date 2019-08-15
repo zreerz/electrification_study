@@ -58,7 +58,7 @@ module generators;
 module powerflow;
 module tape;
 module residential{
-	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS;
+	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
 	paneldump_interval 60;
 	paneldump_filename "paneldump_${RUN_NAME}";
 }
