@@ -3,4 +3,5 @@
 #define WEATHER=CA-San_Jose_Intl_Ap.tmy3
 #set minimum_timestep=60
 #define GAS_COOL=no
+#define UPGRADE=no
 
