@@ -1,8 +1,12 @@
 ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////
 //
-// IEEE 123 realtime simulation model
+// Electrification study simulation model
 // Copyright (C) 2016, Stanford University
-// Author: dchassin@slac.stanford.edu
+// Author: aivanova@slac.stanford.edu
 //
 ///////////////////////////////////////////////////////
 
@@ -16,7 +20,7 @@
 #include "config/local.glm"
 #set CONFIGFILE=config/local.glm
 #endif
-
+#set suppress_repeat_messages=TRUE
 #ifdef TIMEZONE
 clock {
 	timezone ${TIMEZONE};
@@ -53,8 +57,11 @@ module generators;
 #endif // SOLAR
 module powerflow;
 module tape;
-module residential; 
-
+module residential{
+	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
+	paneldump_interval 60;
+	paneldump_filename "paneldump_${RUN_NAME}";
+}
 
 object meter {
 	name main_node;
@@ -66,7 +73,7 @@ object recorder {
 	parent main_node;
 	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
 	interval -1;
-	file "output/substation_power.csv";
+	file "output/substation_power_${RUN_NAME}.csv";
 }
 object meter {
 	name main_node_A;
@@ -114,11 +121,12 @@ object transformer_configuration {
 	secondary_voltage 120.000 V;
 	impedance 0.006+0.0136j;
 }
-
 global int32 SEQ_CUSTID 0;
+global int32 SEQ_CUSTID_PH 0;
 #set allow_reinclude=true
 
-#include using(AREA=A,LOADID=1,PHASE=A,COUNT=33) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=B,COUNT=33) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=C,COUNT=33) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE}) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE}) "house.glm"
+#include using(AREA=A,LOADID=1,PHASE=C,COUNT=${HOUSESPERPHASE}) "house.glm"
+
 
