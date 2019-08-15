@@ -1,3 +1,4 @@
+#define SEQ_CUSTID_PH=0
 object transformer {
 	name xfrm_${LOADID}${PHASE};
 	phases ${PHASE}S;
@@ -13,7 +14,9 @@ object triplex_node {
 
 object triplex_meter:..${COUNT} { 
 	name `meter_{SEQ_CUSTID:INC}`;
-	groupid load_${LOADID};
+#print ${SEQ_CUSTID}
+	groupid `meter_{SEQ_CUSTID_PH:INC}`;
+#print ${SEQ_CUSTID_PH}
 	parent node_${LOADID}${PHASE};
 	phases ${PHASE}S;
 	nominal_voltage 120;
@@ -23,17 +26,17 @@ object triplex_meter:..${COUNT} {
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
 		hvac_power_factor 0.75;
-#if ELEC_HEATING_COUNT<${SEQ_CUSTID}
+#if ELEC_HEATING_COUNT<${SEQ_CUSTID_PH}
 		system_type GAS;
 #endif //GAS_HEATING_COUNT
 		object range {
 			name `range_{SEQ_CUSTID}`;
-#if ELEC_COOKING_COUNT<${COUNT}
+#if ELEC_COOKING_COUNT<${SEQ_CUSTID_PH}
+//#print SEQ CUSTID ${SEQ_CUSTID_PH}
 			heat_mode GASHEAT;
 #endif //ELEC_COOKING_COUNT
 		};
-
-#if ELEC_DRYING_COUNT>=${COUNT}
+#if ELEC_DRYING_COUNT>=${SEQ_CUSTID_PH}
 		object dryer {
 			name `dryer_{SEQ_CUSTID}`;
 			motor_power 350;
@@ -43,7 +46,7 @@ object triplex_meter:..${COUNT} {
 			name `wh_{SEQ_CUSTID}`;
 			tank_volume 50 gal;
 			tank_height 3.78 ft;
-#if ELEC_WHHEATING_COUNT<${COUNT}
+#if ELEC_WHHEATING_COUNT<${SEQ_CUSTID_PH}
 			heat_mode GASHEAT;
 #else 
 			heat_mode ELECTRIC;
