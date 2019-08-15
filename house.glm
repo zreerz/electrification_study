@@ -24,21 +24,32 @@ object triplex_meter:..${COUNT} {
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
 		hvac_power_factor 0.75;
-#if ELEC_HEATING_COUNT<SEQ_CUSTID
+#if ELEC_HEATING_COUNT<${SEQ_CUSTID}
 		system_type GAS;
 #endif //GAS_HEATING_COUNT
+		object range {
+			name `range_{SEQ_CUSTID}`;
+#if ELEC_COOKING_COUNT<${COUNT}
+			heat_mode GASHEAT;
+#endif //ELEC_COOKING_COUNT
+		};
+
+#if ELEC_DRYING_COUNT>=${COUNT}
+		object dryer {
+			name `dryer_{SEQ_CUSTID}`;
+			motor_power 350;
+		};
+#endif //ELEC_DRYING_COUNT
+		object waterheater {
+			name `wh_{SEQ_CUSTID}`;
+			tank_volume 50 gal;
+			tank_height 3.78 ft;
+#if ELEC_WHHEATING_COUNT<${COUNT}
+			heat_mode GASHEAT;
+#else 
+			heat_mode ELECTRIC;
+#endif //ELEC_WHHEATING_COUNT
+		};
 	}; 
 }
 
-object waterheater:..${ELEC_WHHEATING_COUNT} {
-	name `wh_{SEQ_CUSTID_WH:INC}`;
-	parent `house_${SEQ_CUSTID_HOUSE:INC}`;
-	heat_mode ELECTRIC;
-}
-#if GAS_WHHEATING_COUNT>0
-object waterheater:..${GAS_WHHEATING_COUNT} {
-	name `wh_{SEQ_CUSTID_WH:INC}`;
-	parent `house_{SEQ_CUSTID_HOUSE:INC}`;
-	heat_mode GASHEAT;
-}
-#endif //GAS_WHHEATING_COUNT

@@ -57,7 +57,11 @@ module generators;
 #endif // SOLAR
 module powerflow;
 module tape;
-module residential; 
+module residential{
+	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS;
+	paneldump_interval 60;
+	paneldump_filename "paneldump_${RUN_NAME}";
+}
 
 object meter {
 	name main_node;

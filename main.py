@@ -57,13 +57,6 @@ for i,file_name in enumerate(config_files) :
 			fm.seek(0, 0)
 			line="#include \"elec_config/" + file_name + "\"" 
 			fm.write(line+"\n"+"#define RUN_NAME="+file_name[12:-4]+"\n")
-	        
-
-
-# gridlabd.command("model.glm")
-# gridlabd.start("wait")
-# quit()
-
 
 
 
