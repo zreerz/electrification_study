@@ -1,5 +1,4 @@
 import csv 
-import gridlabd
 import os
 import glob
 from shutil import copyfile

@@ -53,12 +53,12 @@ object triplex_meter:..${COUNT} {
 #if GAS==no
 		heating_system_type HEAT_PUMP;
 		cooling_system_type HEAT_PUMP;
-//#if UPGRADE==yes
-	//	thermal_integrity_level VERY_GOOD;
+#if UPGRADE==yes
+		thermal_integrity_level VERY_GOOD;
 		// cooling_system_type HEAT_PUMP;
-//#else 
-		thermal_integrity_level ABOVE_NORMAL;
-//#endif //UPGRADE
+#else 
+		thermal_integrity_level GOOD;
+#endif //UPGRADE
 #endif // GAS no	
 				
 	}; 
