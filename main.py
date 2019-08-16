@@ -11,7 +11,7 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 	fr = csv.reader(csvfile, delimiter=',', quotechar='|')
 	for row in fr : 
 		if "Total Number of Houses" in row[0] : 
-			total_count = int(row[1])/3 #count per phase
+			total_count = int(int(row[1])/3) #count per phase
 		elif 'Run Name' in row[0] : 
 			continue 
 		else :
