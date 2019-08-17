@@ -35,6 +35,7 @@ clock {
 #error TIMEZONE is not specified in ${CONFIGFILE}
 #endif // TIMEZONE
 
+#set randomseed=5 
 ///////////////////////////////////////////////////////
 //
 // WEATHER
@@ -58,23 +59,76 @@ module generators;
 module powerflow;
 module tape;
 module residential{
-	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
-	paneldump_interval -1;
+	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER|CLOTHESWASHER|FREEZER|MICROWAVE|DISHWASHER;
+	paneldump_interval 3600;
 	paneldump_filename "paneldump/paneldump_${RUN_NAME}";
+	implicit_enduse_source RBSA2014_DISCRETE;
 }
 
+object meter {
+	name feeder_node;
+	nominal_voltage 2401 V;
+	phases ABCN;
+}
+
+object overhead_line {
+	name main_line;
+	phases ABCN;
+	from feeder_node;
+	to main_node;
+	length 300.00;
+	configuration lc301;
+}
+//Line configurations
+//ABCN
+object overhead_line_conductor {
+	name olc301c;	//336,400 26/7 ACSR
+	geometric_mean_radius 0.0244;
+	resistance 0.306;
+	diameter 0.721;
+}
+
+object overhead_line_conductor {
+	name olc301n;	//4/0 6/1 ACSR
+	geometric_mean_radius 0.00814;
+	resistance 0.592;
+	diameter 0.563;
+}
+object line_configuration {
+	name lc301;
+	conductor_A olc301c;
+	conductor_B olc301c;
+	conductor_C olc301c;
+	conductor_N olc301n;
+	spacing ls500301;
+}
+//Line spacings
+//ABCN
+object line_spacing {
+	name ls500301;
+	distance_AB 2.5;
+	distance_AC 7.0;
+	distance_BC 4.5;
+	distance_CN 5.0;
+	distance_AN 5.65685424949;
+	distance_BN 4.27200187266;
+	distance_AE 28.0;
+	distance_BE 28.0;
+	distance_CE 28.0;
+	distance_NE 24.0;
+}
 object meter {
 	name main_node;
 	nominal_voltage 2401 V;
 	phases ABCN;
 }
-object recorder {
-	name main_recorder; 
-	parent main_node;
-	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
-	interval -1;
-	file "output/substation_power_${RUN_NAME}.csv";
-}
+//object recorder {
+//	name main_recorder; 
+//	parent main_node;
+//	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
+//	interval -1;
+//	file "output/substation_power_${RUN_NAME}.csv";
+//}
 object meter {
 	name main_node_A;
 	parent main_node;
