@@ -20,7 +20,7 @@
 #include "config/local.glm"
 #set CONFIGFILE=config/local.glm
 #endif
-#set suppress_repeat_messages=TRUE
+#set suppress_repeat_messages=FALSE
 #ifdef TIMEZONE
 clock {
 	timezone ${TIMEZONE};
@@ -177,15 +177,17 @@ object transformer_configuration {
 }
 global int32 SEQ_CUSTID 0;
 #set allow_reinclude=true
+
+#include using(LOADID=1,PHASE=A,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+
+
 #if GAS_COUNT!=0 
 #include using(LOADID=1,PHASE=A,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
 #include using(LOADID=1,PHASE=B,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
 #include using(LOADID=1,PHASE=C,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
 #endif //GAS_COUNT
 
-#if ELEC_COUNT!=0
-#include using(LOADID=1,PHASE=A,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
-#include using(LOADID=1,PHASE=B,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
-#include using(LOADID=1,PHASE=C,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
-#endif //ELEC_COUNT
+
 

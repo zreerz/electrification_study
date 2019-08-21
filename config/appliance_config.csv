@@ -1,3 +1,9 @@
-Total Number of Houses,3
+Total Number of Houses per Phase,33
 Run Name,Gas Fraction
+Baseline,0.4
+Run 1,0.5
+Run 2,0.6
+Run 3,0.7
+Run 4,0.8
+Run 5,0.9
 Full Electric,1
