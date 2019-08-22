@@ -110,4 +110,4 @@ model_files/
 elec_config*
 *.json
 paneldump/
-output_loadshapes/
+output/
