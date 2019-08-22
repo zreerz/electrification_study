@@ -50,8 +50,6 @@ def paneldumpparse(f_name) :
 	print(curr_list_for_print)
 	return curr_list 
 
-
-
 # Variables for plotting
 y_plt = []
 x_label = ['50', '100', '150', '200', '200+']
@@ -86,14 +84,4 @@ plt.xlabel('Electrical Panel Size (A)')
 plt.legend()
 plt.tight_layout()
 plt.show()
-
-
-	# f_list.append(file_name)
-
-	# plt.hist(paneldumpparse(file_name), bins=2, alpha=0.5, label=file_name)
-
-
-# plt.legend(loc='upper right')
-# plt.show()
-
 

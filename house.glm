@@ -61,16 +61,7 @@ object triplex_meter:..${COUNT} {
 		thermal_integrity_level GOOD;
 #endif //UPGRADE
 #endif // GAS no	
-	//	object recorder {
-	//		property "panel";
-	//		file "panel_lights.csv";
-	//		interval -1;
-	//	};
 	}; 
-//	object recorder {
-//		property "price";
-//		file "price_${SEQ_CUSTID}.csv";
-//		interval -1;
-//	};
+
 }
 

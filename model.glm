@@ -81,8 +81,13 @@ object overhead_line {
 	phases ABCN;
 	from feeder_node;
 	to main_node;
-	length 300.00;
+	length 9 mile;
 	configuration lc301;
+	object recorder {
+		property power_losses.real; 
+		file "output/line_losses/line_losses_${RUN_NAME}.csv";
+		interval 1h;
+	};
 }
 //Line configurations
 //ABCN
@@ -132,13 +137,6 @@ object meter {
 		interval 1h;
 	};
 }
-//object recorder {
-//	name main_recorder; 
-//	parent main_node;
-//	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
-//	interval -1;
-//	file "output/substation_power_${RUN_NAME}.csv";
-//}
 object meter {
 	name main_node_A;
 	parent main_node;

@@ -48,7 +48,6 @@ plt.tight_layout()
 tmp = plt.gcf() # get current figure
 plt.xlabel("Time")
 plt.ylabel("Power [kW]")
-# plt.show()
 plt.draw()
 tmp.set_size_inches(21.5, 10.5)
 tmp.savefig("output/feeder_plot/feeder_timeseries.png")
@@ -59,10 +58,7 @@ for i in max_real :
 		if p[0] in i[0] : 
 			plt.scatter(p[1], i[1])
 tmp_1 = plt.gcf() # get current figure
-# # plt.show()
 plt.draw()
 plt.xlabel("Electrification Fraction")
 plt.ylabel("Peak feeder power [kW]")
 tmp_1.savefig("output/feeder_plot/peak_power.png")
-
-#     tmp.savefig("../output/output_loadshapes/loadshape_" + a + ".png")
