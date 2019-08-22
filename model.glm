@@ -83,11 +83,11 @@ object overhead_line {
 	to main_node;
 	length 9 mile;
 	configuration lc301;
-	object recorder {
-		property power_losses.real; 
-		file "output/line_losses/line_losses_${RUN_NAME}.csv";
-		interval 1h;
-	};
+//	object recorder {
+//		property power_losses.real; 
+//		file "output/line_losses/line_losses_${RUN_NAME}.csv";
+//		interval 1h;
+//	};
 }
 //Line configurations
 //ABCN
@@ -131,11 +131,11 @@ object meter {
 	name main_node;
 	nominal_voltage 2401 V;
 	phases ABCN;
-	object recorder {
-		property measured_real_power[kW], measured_reactive_power[kVAr]; 
-		file "output/main_node_power/main_node_${RUN_NAME}.csv";
-		interval 1h;
-	};
+//	object recorder {
+//		property measured_real_power[kW], measured_reactive_power[kVAr]; 
+//		file "output/main_node_power/main_node_${RUN_NAME}.csv";
+//		interval 1h;
+//	};
 }
 object meter {
 	name main_node_A;
