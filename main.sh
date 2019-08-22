@@ -20,4 +20,5 @@ python3 main.py
 for filename in model_files/*.glm; do 
 	gridlabd "$filename"
 done
-python3 post_process.py
+# python3 pythontools/post_process.py
+python3 pythontools/feeder_plot.py

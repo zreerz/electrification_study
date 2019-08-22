@@ -17,7 +17,6 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 		else :
 			elec_count = round(total_count*float(row[1]))
 			gas_count = total_count-elec_count
-			print(elec_count, gas_count)
 			config_file_name = 'elec_config_'+str(row[0]).replace(" ", "_")+'.glm'
 			config_files.append(config_file_name)
 			fw = open("elec_config/"+config_file_name, 'w')
