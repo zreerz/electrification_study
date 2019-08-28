@@ -16,4 +16,4 @@ jobs:
           command: |
             sh main.sh
       - store_artifacts: 
-            path: /root/project/
+            path: /root/project/output
