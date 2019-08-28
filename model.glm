@@ -20,7 +20,7 @@
 #include "config/local.glm"
 #set CONFIGFILE=config/local.glm
 #endif
-#set suppress_repeat_messages=TRUE
+#set suppress_repeat_messages=FALSE
 #ifdef TIMEZONE
 clock {
 	timezone ${TIMEZONE};
@@ -35,6 +35,7 @@ clock {
 #error TIMEZONE is not specified in ${CONFIGFILE}
 #endif // TIMEZONE
 
+#set randomseed=5 
 ///////////////////////////////////////////////////////
 //
 // WEATHER
@@ -58,22 +59,83 @@ module generators;
 module powerflow;
 module tape;
 module residential{
-	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER;
-	paneldump_interval 60;
-	paneldump_filename "paneldump_${RUN_NAME}";
+	implicit_enduses REFRIGERATOR|LIGHTS|PLUGS|WATERHEATER|RANGE|DRYER|CLOTHESWASHER|FREEZER|MICROWAVE|DISHWASHER;
+	paneldump_interval 3600;
+	paneldump_filename "paneldump/paneldump_${RUN_NAME}";
+	implicit_enduse_source EIA2015;
 }
 
+object meter {
+	name feeder_node;
+	nominal_voltage 2401 V;
+	phases ABCN;
+	object recorder {
+		property measured_real_power[kW], measured_reactive_power[kVAr]; 
+		file "output/feeder_power/feeder_${RUN_NAME}.csv";
+		interval 1h;
+	};
+}
+
+object overhead_line {
+	name main_line;
+	phases ABCN;
+	from feeder_node;
+	to main_node;
+	length 3 mile;
+	configuration lc301;
+//	object recorder {
+//		property power_losses.real; 
+//		file "output/line_losses/line_losses_${RUN_NAME}.csv";
+//		interval 1h;
+//	};
+}
+//Line configurations
+//ABCN
+object overhead_line_conductor {
+	name olc301c;	//336,400 26/7 ACSR
+	geometric_mean_radius 0.0244;
+	resistance 0.306;
+	diameter 0.721;
+}
+
+object overhead_line_conductor {
+	name olc301n;	//4/0 6/1 ACSR
+	geometric_mean_radius 0.00814;
+	resistance 0.592;
+	diameter 0.563;
+}
+object line_configuration {
+	name lc301;
+	conductor_A olc301c;
+	conductor_B olc301c;
+	conductor_C olc301c;
+	conductor_N olc301n;
+	spacing ls500301;
+}
+//Line spacings
+//ABCN
+object line_spacing {
+	name ls500301;
+	distance_AB 2.5;
+	distance_AC 7.0;
+	distance_BC 4.5;
+	distance_CN 5.0;
+	distance_AN 5.65685424949;
+	distance_BN 4.27200187266;
+	distance_AE 28.0;
+	distance_BE 28.0;
+	distance_CE 28.0;
+	distance_NE 24.0;
+}
 object meter {
 	name main_node;
 	nominal_voltage 2401 V;
 	phases ABCN;
-}
-object recorder {
-	name main_recorder; 
-	parent main_node;
-	property measured_real_power[kW], measured_reactive_power[kVA], measured_real_energy[kWh], measured_reactive_energy[VAh];
-	interval -1;
-	file "output/substation_power_${RUN_NAME}.csv";
+//	object recorder {
+//		property measured_real_power[kW], measured_reactive_power[kVAr]; 
+//		file "output/main_node_power/main_node_${RUN_NAME}.csv";
+//		interval 1h;
+//	};
 }
 object meter {
 	name main_node_A;
@@ -122,11 +184,19 @@ object transformer_configuration {
 	impedance 0.006+0.0136j;
 }
 global int32 SEQ_CUSTID 0;
-global int32 SEQ_CUSTID_PH 0;
 #set allow_reinclude=true
 
-#include using(AREA=A,LOADID=1,PHASE=A,COUNT=${HOUSESPERPHASE}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=B,COUNT=${HOUSESPERPHASE}) "house.glm"
-#include using(AREA=A,LOADID=1,PHASE=C,COUNT=${HOUSESPERPHASE}) "house.glm"
+#if ELEC_COUNT!=0
+#include using(LOADID=1,PHASE=A,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#endif //ELEC_COUNT
+
+#if GAS_COUNT!=0 
+#include using(LOADID=1,PHASE=A,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${GAS_COUNT},GAS=yes) "house.glm"
+#endif //GAS_COUNT
+
 
 

@@ -1,35 +1,67 @@
-#define SEQ_CUSTID_PH=0
 object transformer {
-	name xfrm_${LOADID}${PHASE};
+#if GAS==yes 
+	name xfrm_${LOADID}${PHASE}_GAS;
+	to node_${LOADID}${PHASE}_GAS;
+#else 
+	name xfrm_${LOADID}${PHASE}_ELEC;
+	to node_${LOADID}${PHASE}_ELEC;
+#endif 
 	phases ${PHASE}S;
 	from main_node_${PHASE};
-	to node_${LOADID}${PHASE};
 	configuration xfmr_config_${PHASE};
 }
 object triplex_node {
-	name node_${LOADID}${PHASE};
+#if GAS==yes
+	name node_${LOADID}${PHASE}_GAS;
+#else 
+	name node_${LOADID}${PHASE}_ELEC;
+#endif
 	phases ${PHASE}S;
 	nominal_voltage 120;
 }
 
 object triplex_meter:..${COUNT} { 
 	name `meter_{SEQ_CUSTID:INC}`;
-#print ${SEQ_CUSTID}
-	groupid `meter_{SEQ_CUSTID_PH:INC}`;
-#print ${SEQ_CUSTID_PH}
-	parent node_${LOADID}${PHASE};
+	price 0.2;
+#if GAS==yes
+	parent node_${LOADID}${PHASE}_GAS;
+#else 
+	parent node_${LOADID}${PHASE}_ELEC;
+#endif
 	phases ${PHASE}S;
 	nominal_voltage 120;
 	object house { 
-		name `house_{SEQ_CUSTID}`;
+#if GAS==yes
+		name `house_{SEQ_CUSTID}_GAS`;
+#else 
+		name `house_{SEQ_CUSTID}_ELEC`;
+#endif
+		groupid group_houses;
 		floor_area random.triangle(1000,1500);
 		cooling_setpoint 76 degF;
 		heating_setpoint 65 degF;
 		hvac_power_factor 0.75;
-#if ELEC_HEATING_COUNT<${SEQ_CUSTID_PH}
-		system_type GAS;
-#endif //GAS_HEATING_COUNT
-		gas_enduses "WATERHEATER|RANGE|DRYER";	
+#if GAS==yes
+#if GAS_COOL==no
+		cooling_system_type NONE;
+#else 
+		cooling_system_type HEAT_PUMP;	
+#endif //GAS_COOL
+		gas_enduses "WATERHEATER|RANGE|DRYER";
+		heating_system_type GAS;
+		thermal_integrity_level ABOVE_NORMAL;
+#endif //GAS yes
+#if GAS==no
+		heating_system_type HEAT_PUMP;
+		cooling_system_type HEAT_PUMP;
+#if UPGRADE==yes
+		thermal_integrity_level VERY_GOOD;
+		// cooling_system_type HEAT_PUMP;
+#else 
+		thermal_integrity_level GOOD;
+#endif //UPGRADE
+#endif // GAS no	
 	}; 
+
 }
 

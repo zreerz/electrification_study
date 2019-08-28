@@ -3,7 +3,7 @@ version: 2.1
 jobs: 
   build:
     docker: 
-      - image: gridlabd/slac-master
+      - image: gridlabd/slac-master:latest
     steps: 
       - checkout 
       - run: 
@@ -16,4 +16,4 @@ jobs:
           command: |
             sh main.sh
       - store_artifacts: 
-            path: /root/project/
+            path: /root/project/output
