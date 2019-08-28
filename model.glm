@@ -81,7 +81,7 @@ object overhead_line {
 	phases ABCN;
 	from feeder_node;
 	to main_node;
-	length 9 mile;
+	length 3 mile;
 	configuration lc301;
 //	object recorder {
 //		property power_losses.real; 

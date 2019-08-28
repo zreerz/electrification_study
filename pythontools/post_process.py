@@ -47,7 +47,6 @@ def paneldumpparse(f_name) :
 	for house in house_dict : 
 		curr_list_for_print.append([house,max(house_dict[house].items(), key=operator.itemgetter(1))[0],max(house_dict[house].items(), key=operator.itemgetter(1))[1]])
 		curr_list.append(max(house_dict[house].items(), key=operator.itemgetter(1))[1])
-	print(curr_list_for_print)
 	return curr_list 
 
 # Variables for plotting
@@ -75,8 +74,6 @@ for file_name in onlyfiles :
 		else : 
 			panel_large = panel_large+1;
 	y_plt = [panel_50, panel_100, panel_150, panel_200, panel_large]
-	# print(c_list)
-	print(file_name[10:],y_plt)
 	plt.bar(x_plt, y_plt, align='center', label=file_name[10:])
 plt.xticks(x_plt, x_label)
 plt.ylabel('Number of Houses')
@@ -84,4 +81,4 @@ plt.xlabel('Electrical Panel Size (A)')
 plt.legend()
 plt.tight_layout()
 plt.show()
-
+plt.savefig('output/panel_histogram.png')
