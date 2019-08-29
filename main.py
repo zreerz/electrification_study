@@ -12,6 +12,10 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 	for row in fr : 
 		if "Total Number of Houses per Phase" in row[0] : 
 			total_count = int(row[1]) #count per phase
+		elif 'Start Time' in row[0] : 
+			starttime=row[1]
+		elif 'Stop Time' in row[0] : 
+			stoptime=row[1]
 		elif 'Run Name' in row[0] : 
 			continue 
 		else :
@@ -21,6 +25,8 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 			config_files.append(config_file_name)
 			fw = open("elec_config/"+config_file_name, 'w')
 			fw.write('#define HOUSESPERPHASE=' + str(total_count))
+			fw.write('\n#define STARTTIME=' + starttime)
+			fw.write('\n#define STOPTIME=' + stoptime)
 			fw.write('\n#define GAS_COUNT=' + str(gas_count))
 			fw.write('\n#define ELEC_COUNT=' + str(elec_count))
 
