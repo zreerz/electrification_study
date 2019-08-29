@@ -1,7 +1,7 @@
 # ELECTRIFICATION STUDY 
 
 ## Configuration 
-To configure the model use file `config/appliance_config.csv`.
+To configure the model use file `config/simulation_configuration.csv`.
 The types of variables defined in the file are: 
 - Number of houses per phase (for a 3 phase circuit)
 - Start time of the simulation

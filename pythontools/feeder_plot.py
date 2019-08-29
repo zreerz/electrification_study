@@ -8,7 +8,7 @@ import glmptime as glmptime
 import numpy as np
 
 filename_perc = []
-with open('config/appliance_config.csv', newline='') as config_file : 
+with open('config/simulation_configuration.csv', newline='') as config_file : 
 	fc = csv.reader(config_file, delimiter=',', quotechar='|')
 	for line in fc : 
 		if 'Total Number of Houses per Phase' in line[0] or 'Run Name' in line[0] : 

@@ -7,7 +7,7 @@ gas_count = 0
 elec_count = 0
 
 config_files=[]
-with open('config/appliance_config.csv', newline='') as csvfile : 
+with open('config/simulation_configuration.csv', newline='') as csvfile : 
 	fr = csv.reader(csvfile, delimiter=',', quotechar='|')
 	for row in fr : 
 		if "Total Number of Houses per Phase" in row[0] : 
@@ -16,7 +16,9 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 			starttime=row[1]
 		elif 'Stop Time' in row[0] : 
 			stoptime=row[1]
-		elif 'Run Name' in row[0] : 
+		elif 'Weather File' in row[0] : 
+			weather_file=row[1]
+		elif 'Run Name' in row[0] or ''==row[0] : 
 			continue 
 		else :
 			elec_count = round(total_count*float(row[1]))
@@ -29,6 +31,7 @@ with open('config/appliance_config.csv', newline='') as csvfile :
 			fw.write('\n#define STOPTIME=' + stoptime)
 			fw.write('\n#define GAS_COUNT=' + str(gas_count))
 			fw.write('\n#define ELEC_COUNT=' + str(elec_count))
+			fw.write('\n#define WEATHER=' + weather_file)
 
 for i,file_name in enumerate(config_files) : 
 	if i==0 : # resetting the folder by removing all the model files 
