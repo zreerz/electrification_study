@@ -1,11 +1,15 @@
 # ELECTRIFICATION STUDY 
 
 ## Configuration 
-The configuration files are located in `config/`
-`config/default.glm` loads the default parameters if `config/local.glm` is not found. 
-`config/local.glm` overwrites and appends to `config/default.glm`. Here you can define the start time, stop time and Weather location of the simulation. 
-`config/appliance_config.csv` allows to define the number of total houses to be simulated and the percent of the load that is electrified broken down on per appliance basis. 
-Multiple lines will result in multiple simulation runs. 
+To configure the model use file `config/appliance_config.csv`.
+The types of variables defined in the file are: 
+- Number of houses per phase (for a 3 phase circuit)
+- Start time of the simulation
+- Stop time of the simulation 
+- Weather location
+- The rest of the file defines the gas fraction: This is done by defining the name of the run and percent electrification (ie percent number of houses that have all electric appliances versus all gas appliances)
+
+Appliances that can defined as gas are: Clothes Dryer, Waterheater, Heating, Stove/Range. If the house is defined to use gas as fuel, the model assumes all the aforementioned appliances are gas.
 
 ## Running the model 
 To run the model: 
