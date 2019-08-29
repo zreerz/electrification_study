@@ -6,12 +6,12 @@ import matplotlib.dates as md
 import matplotlib as matplotlib
 import glmptime as glmptime
 import numpy as np
-
+skip_names=['Total Number of Houses per Phase', 'Run Name', "", 'Start Time', 'Stop Time', "Weather File"]
 filename_perc = []
 with open('config/simulation_configuration.csv', newline='') as config_file : 
 	fc = csv.reader(config_file, delimiter=',', quotechar='|')
 	for line in fc : 
-		if 'Total Number of Houses per Phase' in line[0] or 'Run Name' in line[0] : 
+		if line[0] in skip_names: 
 			continue
 		else : 
 			filename_perc.append([str(line[0]).replace(" ", "_"), float(line[1])])
