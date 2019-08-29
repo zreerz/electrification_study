@@ -3,7 +3,7 @@ version: 2.1
 jobs: 
   build:
     docker: 
-      - image: gridlabd/slac-master:latest
+      - image: gridlabd/slac-master:190828
     steps: 
       - checkout 
       - run: 
