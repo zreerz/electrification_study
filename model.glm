@@ -187,9 +187,14 @@ global int32 SEQ_CUSTID 0;
 #set allow_reinclude=true
 
 #if ELEC_COUNT!=0
-#include using(LOADID=1,PHASE=A,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
-#include using(LOADID=1,PHASE=B,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
-#include using(LOADID=1,PHASE=C,COUNT=${ELEC_COUNT},GAS=no) "house.glm"
+#if UPGRADE_COUNT!=0
+#include using(LOADID=1,PHASE=A,COUNT=${UPGRADE_COUNT},GAS=no,UPGRADE=yes) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${UPGRADE_COUNT},GAS=no,UPGRADE=yes) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${UPGRADE_COUNT},GAS=no,UPGRADE=yes) "house.glm"
+#endif //UPGARDECOUNT
+#include using(LOADID=1,PHASE=A,COUNT=${BASELINE_COUNT},GAS=no,UPGRADE=no) "house.glm"
+#include using(LOADID=1,PHASE=B,COUNT=${BASELINE_COUNT},GAS=no,UPGRADE=no) "house.glm"
+#include using(LOADID=1,PHASE=C,COUNT=${BASELINE_COUNT},GAS=no,UPGRADE=no) "house.glm"
 #endif //ELEC_COUNT
 
 #if GAS_COUNT!=0 

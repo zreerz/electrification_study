@@ -3,9 +3,14 @@ object transformer {
 	name xfrm_${LOADID}${PHASE}_GAS;
 	to node_${LOADID}${PHASE}_GAS;
 #else 
-	name xfrm_${LOADID}${PHASE}_ELEC;
-	to node_${LOADID}${PHASE}_ELEC;
-#endif 
+#if UPGRADE==yes
+	name xfrm_${LOADID}${PHASE}_ELEC_UPGRADE;
+	to node_${LOADID}${PHASE}_ELEC_UPGRADE;
+#else 
+	name xfrm_${LOADID}${PHASE}_ELEC_BASE;
+	to node_${LOADID}${PHASE}_ELEC_BASE;
+#endif //UPGRADE
+#endif //GAS
 	phases ${PHASE}S;
 	from main_node_${PHASE};
 	configuration xfmr_config_${PHASE};
@@ -14,8 +19,12 @@ object triplex_node {
 #if GAS==yes
 	name node_${LOADID}${PHASE}_GAS;
 #else 
-	name node_${LOADID}${PHASE}_ELEC;
-#endif
+#if UPGRADE==yes
+	name node_${LOADID}${PHASE}_ELEC_UPGRADE;
+#else 
+	name node_${LOADID}${PHASE}_ELEC_BASE;
+#endif //UPGRADE
+#endif //GAS
 	phases ${PHASE}S;
 	nominal_voltage 120;
 }
@@ -26,16 +35,24 @@ object triplex_meter:..${COUNT} {
 #if GAS==yes
 	parent node_${LOADID}${PHASE}_GAS;
 #else 
-	parent node_${LOADID}${PHASE}_ELEC;
-#endif
+#if UPGRADE==yes
+	parent node_${LOADID}${PHASE}_ELEC_UPGRADE;
+#else
+	parent node_${LOADID}${PHASE}_ELEC_BASE;
+#endif //UPGRADE
+#endif //GAS
 	phases ${PHASE}S;
 	nominal_voltage 120;
 	object house { 
 #if GAS==yes
 		name `house_{SEQ_CUSTID}_GAS`;
 #else 
-		name `house_{SEQ_CUSTID}_ELEC`;
-#endif
+#if UPGRADE==yes
+	name `house_{SEQ_CUSTID}_ELEC_UPGRADE`;
+#else 
+		name `house_{SEQ_CUSTID}_ELEC_BASE`;
+#endif //UPGRADE
+#endif //GAS
 		groupid group_houses;
 		floor_area random.triangle(1000,1500);
 		cooling_setpoint 76 degF;

@@ -9,7 +9,10 @@ elec_count = 0
 config_files=[]
 with open('config/simulation_configuration.csv', newline='') as csvfile : 
 	fr = csv.reader(csvfile, delimiter=',', quotechar='|')
+	baseline_count = []
 	for row in fr : 
+		if 'baseline' in row[0].strip(' ').lower() : 
+			baseline_count=round(total_count*float(row[1]))
 		if "Total Number of Houses per Phase" in row[0] : 
 			total_count = int(row[1]) #count per phase
 		elif 'Start Time' in row[0] : 
@@ -32,6 +35,14 @@ with open('config/simulation_configuration.csv', newline='') as csvfile :
 			fw.write('\n#define GAS_COUNT=' + str(gas_count))
 			fw.write('\n#define ELEC_COUNT=' + str(elec_count))
 			fw.write('\n#define WEATHER=' + weather_file)
+			if baseline_count : 
+				fw.write('\n#define BASELINE_COUNT=' + str(baseline_count))
+			else : 
+				baseline_count=round(total_count*0.50)
+				fw.write('\n#print Electrification Baseline is not provided, assuming 50% electric')
+			upgrade_count=elec_count-baseline_count
+			fw.write('\n#define UPGRADE_COUNT=' + str(upgrade_count))
+
 
 for i,file_name in enumerate(config_files) : 
 	if i==0 : # resetting the folder by removing all the model files 
